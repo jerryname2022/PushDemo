@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.push.demo.MainActivity">
+
+    <EditText
+        android:id="@+id/action_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="http://test.venusplatform.com:50002/living/person/index?vin=TESTGZHS000000001" />
+
+    <Button
+        android:id="@+id/action_btn"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="跳转" />
+
+
+    <Button
+        android:id="@+id/search_btn"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="蓝牙搜索"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/notify_btn"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="订阅"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/connect_btn"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="连接"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/auth_btn"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="鉴权"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/message_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+</LinearLayout>

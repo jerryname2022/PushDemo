@@ -1,0 +1,35 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+    defaultConfig {
+        applicationId "com.push.demo"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    //PushSDK必须依赖基础组件库，所以需要加入对应依赖
+//    compile 'com.umeng.umsdk:common:1.5.4'
+    //PushSDK必须依赖utdid库，所以需要加入对应依赖
+//    compile 'com.umeng.umsdk:utdid:1.1.5.3'
+    //PushSDK
+    //    compile 'com.umeng.umsdk:push:5.0.2'
+    compile project(':push')
+    /*蓝牙*/
+    implementation 'com.inuker.bluetooth:library:1.4.0'
+    //compile 'com.github.delight-im:Android-AdvancedWebView:v3.0.0'
+    api 'com.tencent.tbs.tbssdk:sdk:43903'
+}

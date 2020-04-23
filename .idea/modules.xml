@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/JPushExample/JPushExample.iml" filepath="$PROJECT_DIR$/JPushExample/JPushExample.iml" group="PushDemo/JPushExample" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PushDemo.iml" filepath="$PROJECT_DIR$/.idea/PushDemo.iml" group="PushDemo" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="PushDemo/app" />
+      <module fileurl="file://$PROJECT_DIR$/push/push.iml" filepath="$PROJECT_DIR$/push/push.iml" group="PushDemo/push" />
+    </modules>
+  </component>
+</project>
