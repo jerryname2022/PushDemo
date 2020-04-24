@@ -1,4 +1,4 @@
-package com.push.demo;
+package com.unicom.web;
 
 
 import android.annotation.SuppressLint;
@@ -8,13 +8,24 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.push.demo.PermissionHelper;
+import com.push.demo.R;
+import com.tencent.smtt.sdk.WebSettings;
+
+import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,8 +98,8 @@ public class UnicomWebActivity extends Activity {
         mWebContentWv.setUnicomWebViewListener(new UnicomX5WebView.UnicomWebViewListener() {
             @Override
             public void onOpenFileInput(String accept, boolean allowMultiple) {
-                mAllowMultiple = allowMultiple;
                 if (mCameraDialog != null && mImageAccepts.contains(accept)) {
+                    mAllowMultiple = allowMultiple;
                     mCameraDialog.show();
                 }
             }
@@ -99,18 +110,28 @@ public class UnicomWebActivity extends Activity {
     @SuppressLint({"JavascriptInterface", "SetJavaScriptEnabled"})
     private void initView() {
         com.tencent.smtt.sdk.WebSettings webSettings = mWebContentWv.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setAllowFileAccess(true);
-        webSettings.setAllowContentAccess(true);
-        //DOM缓存
-        webSettings.setDomStorageEnabled(true);
-        //cache缓存
-        webSettings.setAppCacheEnabled(false);
-        //webView中访问内容URL，默认true
-        webSettings.setAllowContentAccess(true);
-        //自适应屏幕，超出宽度时，会缩小适应屏幕
+        // 不支持缩放
+        webSettings.setSupportZoom(false);
+        // 自适应屏幕大小
+        webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
-
+        //使用缓存
+        webSettings.setAppCacheEnabled(true);
+        //DOM Storage
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        //启动对js的支持
+        webSettings.setJavaScriptEnabled(true);
+        //对图片大小适配
+        webSettings.setUseWideViewPort(true);
+        //对文字大小适配
+        webSettings.setLoadWithOverviewMode(true);
+        // 判断系统版本是不是5.0或之上
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //让系统不屏蔽混合内容和第三方Cookie
+            // CookieManager.getInstance().setAcceptThirdPartyCookies(mWebContentWv, true);
+            // webSettings.setMixedContentMode(0);//永远允许
+        }
 
         com.tencent.smtt.sdk.WebChromeClient wvcc = new com.tencent.smtt.sdk.WebChromeClient() {
             @Override
@@ -123,7 +144,6 @@ public class UnicomWebActivity extends Activity {
                 super.onReceivedTitle(view, title);
                 // mNormalTitleTitleTv.setText(title);
             }
-
 
             // file upload callback (Android 2.2 (API level 8) -- Android 2.3 (API level 10)) (hidden method)
             @SuppressWarnings("unused")
@@ -159,7 +179,7 @@ public class UnicomWebActivity extends Activity {
         // mWebContentWv.set
         // 设置setWebChromeClient对象
         mWebContentWv.setWebChromeClient(wvcc);
-        mWebContentWv.addJavascriptInterface(new WebViewJavascriptInterface(), "JS_ANDROID");
+        mWebContentWv.addJavascriptInterface(this, "JS_ANDROID");
 
         // 创建WebViewClient对象
         com.tencent.smtt.sdk.WebViewClient wvc = new com.tencent.smtt.sdk.WebViewClient() {
@@ -175,12 +195,10 @@ public class UnicomWebActivity extends Activity {
             @Override
             public void onPageFinished(com.tencent.smtt.sdk.WebView view, String url) {
                 super.onPageFinished(view, url);
-
                 // 获取页面内容
                 view.loadUrl("javascript:window.JS_ANDROID.onHtmlLoaded(\"" + url + "\", "
                         + "document.getElementsByTagName('html')[0].innerHTML);");
             }
-
 
             @Override
             public void onReceivedError(com.tencent.smtt.sdk.WebView view, int errorCode, String description, String failingUrl) {
@@ -213,17 +231,21 @@ public class UnicomWebActivity extends Activity {
             }
         }
         i.setType("*/*");
-        startActivityForResult(Intent.createChooser(i, AdvancedWebView.decodeBase64("6YCJ5oup5LiA5Liq5paH5Lu2")), UnicomX5WebView.REQUEST_CODE_FILE_PICKER);
+        startActivityForResult(Intent.createChooser(i, UnicomX5WebView.decodeBase64("6YCJ5oup5LiA5Liq5paH5Lu2")), UnicomX5WebView.REQUEST_CODE_FILE_PICKER);
     }
 
 
     private void cameraAction() {
 
         try {
+            String name = new SimpleDateFormat("yyyyMMddhhmmss").format(System.currentTimeMillis()) + ".jpg";
+            File file = new File(Environment.getExternalStorageDirectory(), name);
 
-            Uri takenPhotoUri = ImageCaptureHelper.launchCameraApp(UnicomX5WebView.REQUEST_CODE_CAMERA, this, null, true);
-            mWebContentWv.setCameraUri(takenPhotoUri);
-
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            Uri cameraUri = FileProvider.getUriForFile(this, "com.unicom.web.fileprovider", file);
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraUri);
+            startActivityForResult(cameraIntent, UnicomX5WebView.REQUEST_CODE_CAMERA);
+            mWebContentWv.setCameraUri(cameraUri);
         } catch (Exception e) {
             e.printStackTrace();
             makeText("打开摄像头失败");
@@ -247,6 +269,17 @@ public class UnicomWebActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         mWebContentWv.onActivityResult(requestCode, resultCode, intent);
+    }
+
+    @JavascriptInterface
+    public void onHtmlLoaded(String url, String html) {
+        Log.i(getClass().getSimpleName(), "onHtmlLoaded " + url);
+    }
+
+    @JavascriptInterface
+    public void CUSCcallback() {
+        Log.i(getClass().getSimpleName(), "====>CUSCcallback=");
+        finish();
     }
 
 

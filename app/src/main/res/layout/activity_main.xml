@@ -6,18 +6,18 @@
     android:orientation="vertical"
     tools:context="com.push.demo.MainActivity">
 
-    <EditText
-        android:id="@+id/action_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="http://test.venusplatform.com:50002/living/person/index?vin=TESTGZHS000000001" />
 
     <Button
         android:id="@+id/action_btn"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:text="跳转" />
+        android:text="x5" />
 
+    <Button
+        android:id="@+id/action2_btn"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="gecko" />
 
     <Button
         android:id="@+id/search_btn"

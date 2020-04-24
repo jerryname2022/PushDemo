@@ -5,6 +5,9 @@ buildscript {
         jcenter()
         maven { url 'https://dl.bintray.com/umsdk/release' }
         maven { url "https://jitpack.io" }
+        maven {
+            url "https://maven.mozilla.org/maven2"
+        }
         google()
     }
     dependencies {
@@ -22,6 +25,9 @@ allprojects {
         mavenCentral()
         maven { url 'https://dl.bintray.com/umsdk/release' }
         maven { url "https://jitpack.io" }
+        maven {
+            url "https://maven.mozilla.org/maven2/"
+        }
     }
 }
 

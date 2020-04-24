@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.inuker.bluetooth.library.BluetoothClient;
@@ -26,6 +25,7 @@ import com.inuker.bluetooth.library.search.SearchRequest;
 import com.inuker.bluetooth.library.search.SearchResult;
 import com.inuker.bluetooth.library.search.response.SearchResponse;
 import com.umeng.message.PushAgent;
+import com.unicom.web.UnicomWebActivity;
 
 import java.util.List;
 import java.util.UUID;
@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
     private UUID mWriteCharacter = UUID.fromString("6f410003-b5a3-f393-e0a9-e50e24dcca9e");
     private UUID mReadCharacter = UUID.fromString("6f410005-b5a3-f393-e0a9-e50e24dcca9e");
     private UUID mNotifyCharacter = UUID.fromString("6f410004-b5a3-f393-e0a9-e50e24dcca9e");
-    EditText mEditText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +64,19 @@ public class MainActivity extends Activity {
         mTextView = findViewById(R.id.message_tv);
         mBluetoothClient = new BluetoothClient(getApplicationContext());
 
-
-        mEditText = findViewById(R.id.action_et);
-
         findViewById(R.id.action_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mUrl = mEditText.getText().toString();
-                startWebActivity(mBaseUrl);
-                //search();
+                startUnicomWebActivity(mBaseUrl);
+            }
+        });
+
+
+        findViewById(R.id.action2_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "https://np.beta.cu.stx.hk/ability/alive/alive.html?tradeId=612239154703206250&appid=LgKB9pF3a&timestamp=20200424173103337&token=6e2c04079071ce2b0e4d847bcfceacd7";
+                startUnicomWebActivity(url);
             }
         });
 
@@ -129,11 +133,20 @@ public class MainActivity extends Activity {
     }
 
 
+    //19
     String mBaseUrl =
-           // "https://np.beta.cu.stx.hk/ability/alive/alive.html?tradeId=611308179597002216&appid=LgKB9pF3a&timestamp=20200423104122133&token=064e7487be7d046dc0a31a80136fcba4";
-            "http://pre-ocu4.venusplatform.com/living/person/index?type=vin&params=BMJb_GrWgC-zOTZBB_zsTnrosg-7QkcuxnWTB7NmeZU04AFUeBpvJz2IM0yY8sWtkqbK8v7k0gSqadscKXCop-kCbsqSptaZloe65QKabGX4mgE5qnUYv-Wo8evWYaIeBRJaDs6U";
 
-    protected void startWebActivity(String url) {
+            //  "https://np.beta.cu.stx.hk/ability/alive/alive.html?tradeId=612187230159210330&appid=LgKB9pF3a&timestamp=20200424154753428&token=3c58756b45e815cb24a8d90c7a3d3f70";
+            //  "https://np.beta.cu.stx.hk/ability/alive/alive.html?tradeId=612154520904632148&appid=LgKB9pF3a&timestamp=20200424144254168&token=dd36e59040f9ff80d66d5a029b3a2742";
+            //17
+            // "http://pre-ocu4.venusplatform.com/living/person/index?type=vin&params=BIohmIO1snpLIRkumtSZMfz5-ckoJzhsRXyhhPQqg5jMGhx6z5rvGz1gqDfvIE8QiwxIw4DT_2Gy4z4U6c9VblJpxXT4eURPc0vxNHM08gN-7Xtl6OhZXfP27NfCfIzXZ3TpmAN3";
+            //18
+            //  "http://pre-ocu4.venusplatform.com/living/person/index?type=vin&params=BPb1Mu7lBqHiXCPABLoSpGusZfgmBTkfn6xxFLwv1jYd5OiGKTV3HlYwBjpZkKQ3QCy_uLXuGYVGD37Gv6MtEIwBug4Z68TBsTheB5YUulwFZt9fKGLGVmeKnP2hvqB1Rgb65KeJ";
+            //19
+            "http://pre-ocu4.venusplatform.com/living/person/index?type=vin&params=BNxWnrsFGh04w6_j5rk68U7NlHW8I05AMMBwCUg5gfpw_-A-ssmEAho1Dnnwo3EsiipHqW-qUSyez_4LyHGktR19PoMK5ttdVhxN7B0KYBJFTJ38PiZKcwmQWA8YZVOu1Xo1vXc7";
+
+
+    protected void startUnicomWebActivity(String url) {
         startActivity(new Intent(this, UnicomWebActivity.class).putExtra("URL", url));
     }
 

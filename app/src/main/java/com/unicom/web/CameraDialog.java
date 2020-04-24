@@ -1,4 +1,4 @@
-package com.push.demo;
+package com.unicom.web;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.push.demo.R;
 
 
 public class CameraDialog extends Dialog implements DialogInterface.OnShowListener, View.OnClickListener {

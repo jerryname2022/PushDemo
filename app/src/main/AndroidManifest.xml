@@ -25,6 +25,7 @@
         android:name="android.hardware.camera"
         android:required="true" />
     <uses-feature android:name="android.hardware.camera2.full" />
+
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-feature
@@ -38,7 +39,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,11 +49,24 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".UnicomWebActivity" android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-
+        <activity
+            android:name="com.unicom.web.UnicomWebActivity"
+            android:screenOrientation="nosensor"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
 
         <service android:name="com.inuker.bluetooth.library.BluetoothService" />
 
+
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.unicom.web.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
 
     </application>
 

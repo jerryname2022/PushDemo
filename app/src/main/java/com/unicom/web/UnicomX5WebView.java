@@ -1,4 +1,4 @@
-package com.push.demo;
+package com.unicom.web;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -7,6 +7,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Base64;
+
+import com.tencent.smtt.sdk.WebChromeClient;
+
+import java.io.UnsupportedEncodingException;
 
 
 public class UnicomX5WebView extends com.tencent.smtt.sdk.WebView {
@@ -68,6 +73,11 @@ public class UnicomX5WebView extends com.tencent.smtt.sdk.WebView {
         }
     }
 
+    public static String decodeBase64(final String base64) throws IllegalArgumentException, UnsupportedEncodingException {
+        final byte[] bytes = Base64.decode(base64, Base64.DEFAULT);
+        return new String(bytes, "UTF-8");
+    }
+
     @SuppressLint("NewApi")
     public void openFileInput(com.tencent.smtt.sdk.ValueCallback<Uri> fileUploadCallbackFirst, com.tencent.smtt.sdk.ValueCallback<Uri[]> fileUploadCallbackSecond, com.tencent.smtt.sdk.WebChromeClient.FileChooserParams fileChooserParams) {
         if (mFileUploadCallbackFirst != null) {
@@ -85,10 +95,7 @@ public class UnicomX5WebView extends com.tencent.smtt.sdk.WebView {
             boolean allowMultiple = fileChooserParams.getMode() == com.tencent.smtt.sdk.WebChromeClient.FileChooserParams.MODE_OPEN_MULTIPLE;
 
             String[] acceptTypes = fileChooserParams.getAcceptTypes();
-            Intent intent = fileChooserParams.createIntent();
-
             String accept = mFileTypes;
-
             if (acceptTypes != null && acceptTypes.length > 0) {
                 accept = acceptTypes[0];
             }
@@ -149,6 +156,7 @@ public class UnicomX5WebView extends com.tencent.smtt.sdk.WebView {
 
                 Uri cameraUri = mCameraUri;
                 if (mFileUploadCallbackFirst != null) {
+
                     mFileUploadCallbackFirst.onReceiveValue(cameraUri);
                     mFileUploadCallbackFirst = null;
                 } else if (mFileUploadCallbackSecond != null) {
