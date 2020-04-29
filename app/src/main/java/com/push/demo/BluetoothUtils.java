@@ -59,7 +59,6 @@ public class BluetoothUtils {
 
         setCmdIndex(request, request.length - 1, (byte) encodeCRC32(request));
 
-
         return request;
     }
 
@@ -113,6 +112,15 @@ public class BluetoothUtils {
 
 
     public static String format(byte[] bytes) {
+        StringBuffer buffer = new StringBuffer();
+        for (int n = 0; n < bytes.length; n++) {
+            String f = String.format("%02x", (bytes[n] & 0xFF));
+            buffer.append(f + ":");
+        }
+        return buffer.toString();
+    }
+
+    public static String format(int[] bytes) {
         StringBuffer buffer = new StringBuffer();
         for (int n = 0; n < bytes.length; n++) {
             String f = String.format("%02x", (bytes[n] & 0xFF));
